@@ -121,7 +121,12 @@ export default function BackgroundCapsules({ active = true }: { active?: boolean
   }, [reduce, active])
 
   return (
-    <svg className="pointer-events-none absolute inset-0 w-full h-full" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice">
+    <svg
+      className="pointer-events-none absolute inset-0 w-full h-full overflow-hidden"
+      viewBox="0 0 1440 800"
+      preserveAspectRatio="xMidYMid slice"
+      style={{ overflow: 'hidden' }}
+    >
       <defs>
         {gradients.map(g => (
           <linearGradient id={g.id} key={g.id} x1="0%" y1="0%" x2="100%" y2="0%">
@@ -149,6 +154,7 @@ export default function BackgroundCapsules({ active = true }: { active?: boolean
         transformTemplate={({ x, y }) => `translate(${Number(x)/40 + Number(vx.get())*6}px, ${Number(y)/50 + Number(vy.get())*6}px)`}
         animate={reduce ? undefined : { filter: ['hue-rotate(0deg)', 'hue-rotate(8deg)', 'hue-rotate(0deg)'] }}
         transition={{ duration: 120, repeat: Infinity, ease: 'easeInOut' }}
+        style-prop:overflow="hidden"
       >
         {paths.map((d, i) => (
           <g key={i}>

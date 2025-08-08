@@ -23,7 +23,7 @@ export default function App() {
     import('./content.json').then(m => setContent(m.default as any))
   }, [])
   return (
-    <div className="relative h-full w-full">
+    <div className="relative h-full w-full overflow-hidden">
       <BackgroundCapsules active={!skillsOpen} />
 
       {/* Centered header actions */}

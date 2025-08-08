@@ -10,6 +10,16 @@ html, body, #root {
   height: 100%;
 }
 
+/* Prevent horizontal overflow on mobile Safari */
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+#root {
+  overflow: hidden;
+}
+
 body {
   margin: 0;
   overflow: hidden; /* No scroll */
