@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://cardpagelarshoehn.netlify.app/sitemap.xml
+

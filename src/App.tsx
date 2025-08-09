@@ -98,14 +98,14 @@ export default function App() {
                   {/* online indicator removed */}
                 </motion.div>
                 <div className="space-y-2 mx-auto max-w-[30ch]">
-                  <motion.div
+                  <motion.h1
                     className="text-3xl md:text-4xl font-semibold tracking-tight select-none"
                     whileHover={{ y: -1, scale: 1.01 }}
                     transition={{ type: 'spring', stiffness: 240, damping: 20 }}
                     style={{ textShadow: '0 1px 0 rgba(255,255,255,0.6)', color: 'var(--text-primary)' }}
                   >
                     {content?.profile?.name ?? '—'}
-                  </motion.div>
+                  </motion.h1>
                   <motion.div
                     className="text-neutral-700/85"
                     whileHover={{ y: -1, opacity: 1 }}
@@ -114,7 +114,7 @@ export default function App() {
                   >
                     {content?.profile?.tagline}
                   </motion.div>
-                  <motion.div
+                  <motion.h2
                     className="text-lg md:text-xl text-neutral-700/85"
                     whileHover={{ y: -1, opacity: 1 }}
                     transition={{ duration: 0.2, ease: 'easeOut' }}
@@ -134,15 +134,15 @@ export default function App() {
                       const age = Number.isNaN(derivedAge) || derivedAge === undefined ? content?.profile?.age : derivedAge
                       return content ? `${age} • ${content.profile.pronouns} • ${content.profile.nationality}` : '—'
                     })()}
-                  </motion.div>
-                  <motion.div
+                  </motion.h2>
+                    <motion.p
                     className="text-sm text-neutral-700/70"
                     whileHover={{ y: -1, opacity: 1 }}
                     transition={{ duration: 0.2, ease: 'easeOut' }}
                     style={{ opacity: 0.95, color: 'var(--text-secondary)' }}
                   >
                     {content?.profile?.school} — {content?.profile?.graduation}
-                  </motion.div>
+                  </motion.p>
                 </div>
               </div>
             </InteractiveCard>
