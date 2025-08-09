@@ -23,7 +23,7 @@ export default function App() {
     import('./content.json').then(m => setContent(m.default as any))
   }, [])
   return (
-    <div className="relative h-full w-full overflow-hidden">
+    <div className="relative h-full w-full overflow-visible md:overflow-hidden">
       <BackgroundCapsules active={!skillsOpen} />
 
       {/* Centered header actions */}
@@ -32,7 +32,7 @@ export default function App() {
         <ProjectButton />
       </div>
 
-      <div className="absolute inset-0 flex items-center justify-center p-6">
+      <div className="md:absolute md:inset-0 flex items-center justify-center p-6 min-h-screen md:min-h-0">
         <motion.div
           className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-stretch max-w-[1100px] w-full"
           initial={reduce ? undefined : 'hide'}
@@ -46,18 +46,77 @@ export default function App() {
           <div className="flex md:h-[56vh] items-center">
             <InteractiveCard className="flex-1 h-full flex">
               <div className="h-full w-full flex flex-col items-center justify-center gap-4 text-center">
-                <div className="relative mx-auto">
-                  <div className="h-40 w-40 md:h-44 md:w-44 rounded-full overflow-hidden ring-2 ring-white/70 shadow-md">
-                    <img src="/avatar.jpeg" alt="Avatar" className="h-full w-full object-cover" />
+                <motion.div
+                  className="relative mx-auto group"
+                  whileHover={{ scale: 1.03 }}
+                  transition={{ type: 'spring', stiffness: 220, damping: 18 }}
+                  onPointerMove={(e) => {
+                    const el = e.currentTarget as HTMLElement
+                    const rect = el.getBoundingClientRect()
+                    const mx = ((e.clientX - rect.left) / rect.width) * 100
+                    const my = ((e.clientY - rect.top) / rect.height) * 100
+                    el.style.setProperty('--mx', `${mx}%`)
+                    el.style.setProperty('--my', `${my}%`)
+                  }}
+                >
+                  <div className="h-40 w-40 md:h-44 md:w-44 rounded-full overflow-hidden ring-2 ring-white/70 shadow-md transition-shadow duration-300">
+                    <motion.img
+                      src="/avatar.jpeg"
+                      alt="Avatar"
+                      className="h-full w-full object-cover"
+                      whileHover={{ scale: 1.04, y: -2 }}
+                      transition={{ type: 'spring', stiffness: 260, damping: 22 }}
+                    />
+                    {/* sheen */}
+                    <div
+                      className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                      style={{
+                        background:
+                          'radial-gradient(160px 110px at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.24), rgba(255,255,255,0) 60%)'
+                      }}
+                    />
                   </div>
+                  {/* soft outer glow on hover */}
+                  <div
+                    className="pointer-events-none absolute -inset-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{ boxShadow: '0 18px 40px rgba(59,130,246,0.14)' }}
+                  />
                   {/* online/offline dot */}
                   <OnlineDot />
-                </div>
+                </motion.div>
                 <div className="space-y-2 mx-auto max-w-[30ch]">
-                  <div className="text-3xl md:text-4xl font-semibold tracking-tight select-none">{content?.profile?.name ?? '—'}</div>
-                  <div className="text-neutral-700/85">{content?.profile?.tagline}</div>
-                  <div className="text-lg md:text-xl text-neutral-700/85">{content ? `${content.profile.age} • ${content.profile.pronouns} • ${content.profile.nationality}` : '—'}</div>
-                  <div className="text-sm text-neutral-700/70">{content?.profile?.school} — {content?.profile?.graduation}</div>
+                  <motion.div
+                    className="text-3xl md:text-4xl font-semibold tracking-tight select-none"
+                    whileHover={{ y: -1, scale: 1.01 }}
+                    transition={{ type: 'spring', stiffness: 240, damping: 20 }}
+                    style={{ textShadow: '0 1px 0 rgba(255,255,255,0.6)' }}
+                  >
+                    {content?.profile?.name ?? '—'}
+                  </motion.div>
+                  <motion.div
+                    className="text-neutral-700/85"
+                    whileHover={{ y: -1, opacity: 1 }}
+                    transition={{ duration: 0.2, ease: 'easeOut' }}
+                    style={{ opacity: 0.95 }}
+                  >
+                    {content?.profile?.tagline}
+                  </motion.div>
+                  <motion.div
+                    className="text-lg md:text-xl text-neutral-700/85"
+                    whileHover={{ y: -1, opacity: 1 }}
+                    transition={{ duration: 0.2, ease: 'easeOut' }}
+                    style={{ opacity: 0.95 }}
+                  >
+                    {content ? `${content.profile.age} • ${content.profile.pronouns} • ${content.profile.nationality}` : '—'}
+                  </motion.div>
+                  <motion.div
+                    className="text-sm text-neutral-700/70"
+                    whileHover={{ y: -1, opacity: 1 }}
+                    transition={{ duration: 0.2, ease: 'easeOut' }}
+                    style={{ opacity: 0.95 }}
+                  >
+                    {content?.profile?.school} — {content?.profile?.graduation}
+                  </motion.div>
                 </div>
               </div>
             </InteractiveCard>

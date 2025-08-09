@@ -4,7 +4,7 @@
 export const DISCORD_USER_ID = '' as const;
 
 // Public GitHub URL of this project (set to your repo URL)
-export const PROJECT_GITHUB_URL = 'https://github.com/fmAcvg' as const;
+export const PROJECT_GITHUB_URL = 'https://github.com/fmAcvg/liquid-glass-card-personal' as const;
 
 // Live deployment URL
 export const LIVE_URL = 'https://cardpagelarshoehn.netlify.app/' as const;

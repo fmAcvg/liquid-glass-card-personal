@@ -6,6 +6,9 @@ export default function BackgroundCapsules({ active = true }: { active?: boolean
   const [paths, setPaths] = useState<string[]>([])
   const [hoverPos, setHoverPos] = useState<{ x: number; y: number } | null>(null)
   const [ripples, setRipples] = useState<Array<{ id: number; x: number; y: number }>>([])
+  const groupRefs = React.useRef<Array<SVGGElement | null>>([])
+  const [speedScale, setSpeedScale] = useState<number[]>([])
+  const boostTimeouts = React.useRef<Record<number, ReturnType<typeof setTimeout>>>({})
 
   useEffect(() => {
     const width = 1440
@@ -49,6 +52,17 @@ export default function BackgroundCapsules({ active = true }: { active?: boolean
     }
     setPaths(newPaths)
   }, [])
+
+  // Ensure speed scale array matches path count
+  useEffect(() => {
+    if (!paths.length) return
+    setSpeedScale(prev => {
+      if (prev.length === paths.length) return prev
+      const next = Array(paths.length).fill(1)
+      for (let i = 0; i < Math.min(prev.length, next.length); i += 1) next[i] = prev[i] ?? 1
+      return next
+    })
+  }, [paths])
 
   const gradients = [
     { id: 'capsGrad1', stops: [
@@ -115,6 +129,38 @@ export default function BackgroundCapsules({ active = true }: { active?: boolean
       const id = Date.now() + Math.random()
       setRipples(r => [...r.slice(-6), { id, x: e.clientX, y: e.clientY }])
       setTimeout(() => setRipples(r => r.filter(rr => rr.id !== id)), 900)
+
+      // Local speed boost for nearby lines (2s)
+      const radius = Math.min(220, Math.min(window.innerWidth, window.innerHeight) * 0.25)
+      const clickX = e.clientX
+      const clickY = e.clientY
+      const distanceToRect = (x: number, y: number, rect: DOMRect) => {
+        const dx = Math.max(rect.left - x, 0, x - rect.right)
+        const dy = Math.max(rect.top - y, 0, y - rect.bottom)
+        return Math.hypot(dx, dy)
+      }
+      groupRefs.current.forEach((el, idx) => {
+        if (!el) return
+        const rect = el.getBoundingClientRect()
+        const dist = distanceToRect(clickX, clickY, rect)
+        if (dist <= radius) {
+          // Clear any existing timeout for this index
+          const t = boostTimeouts.current[idx]
+          if (t) clearTimeout(t)
+          setSpeedScale(prev => {
+            const next = prev.slice()
+            next[idx] = 0.5 // faster (shorter duration)
+            return next
+          })
+          boostTimeouts.current[idx] = setTimeout(() => {
+            setSpeedScale(prev => {
+              const next = prev.slice()
+              next[idx] = 1
+              return next
+            })
+          }, 2000)
+        }
+      })
     }
     window.addEventListener('pointerdown', onDown)
     return () => window.removeEventListener('pointerdown', onDown)
@@ -156,8 +202,10 @@ export default function BackgroundCapsules({ active = true }: { active?: boolean
         transition={{ duration: 120, repeat: Infinity, ease: 'easeInOut' }}
         style-prop:overflow="hidden"
       >
-        {paths.map((d, i) => (
-          <g key={i}>
+        {paths.map((d, i) => {
+          const scale = speedScale[i] ?? 1
+          return (
+          <g key={i} ref={el => { groupRefs.current[i] = el }}>
             <path d={d} stroke="rgba(255,255,255,0.12)" strokeWidth={widths[i % widths.length]} fill="none" strokeLinecap="round" />
             <motion.path
               d={d}
@@ -169,7 +217,7 @@ export default function BackgroundCapsules({ active = true }: { active?: boolean
               style={{ strokeDasharray: '0.22 0.78', filter: 'blur(0.3px)' }}
               initial={reduce ? undefined : { strokeDashoffset: 0 }}
               animate={reduce ? undefined : { strokeDashoffset: (i % 2 === 0) ? [-0, -1] : [0, 1], opacity: hoverPos ? 0.95 : 0.85 }}
-              transition={{ duration: durations[i % durations.length], repeat: Infinity, ease: 'easeInOut' }}
+              transition={{ duration: durations[i % durations.length] * scale, repeat: Infinity, ease: 'easeInOut' }}
             />
             <motion.path
               d={d}
@@ -181,10 +229,10 @@ export default function BackgroundCapsules({ active = true }: { active?: boolean
               style={{ strokeDasharray: '0.16 0.84', mixBlendMode: 'overlay' as any, opacity: hoverPos ? 0.9 : 0.8 }}
               initial={reduce ? undefined : { strokeDashoffset: (i % 2 === 0) ? 0.5 : -0.5 }}
               animate={reduce ? undefined : { strokeDashoffset: (i % 2 === 0) ? [0.5, -0.5] : [-0.5, 0.5] }}
-              transition={{ duration: durations[i % durations.length] * 1.2, repeat: Infinity, ease: 'easeInOut' }}
+              transition={{ duration: durations[i % durations.length] * 1.2 * scale, repeat: Infinity, ease: 'easeInOut' }}
             />
           </g>
-        ))}
+        )})}
       </motion.g>
 
       <motion.circle r={260} fill="url(#haloGrad)" style={{ cx: mx as unknown as number, cy: my as unknown as number, opacity: reduce ? 0 : (active ? 0.06 : 0.02) }} animate={{ r: [250, 265, 250] }} transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }} />

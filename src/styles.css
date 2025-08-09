@@ -22,8 +22,14 @@ html, body {
 
 body {
   margin: 0;
-  overflow: hidden; /* No scroll */
+  overflow: hidden; /* default: no scroll on large screens */
   background: linear-gradient(180deg, #ecf0f6, #e3e8f1 40%, #dfe4ee);
+}
+
+/* Allow vertical scrolling on small screens or short viewports */
+@media (max-width: 768px), (max-height: 720px) {
+  #root { overflow: visible; }
+  body { overflow-y: auto; }
 }
 
 /* pointer-follow sheen for Resume button */
