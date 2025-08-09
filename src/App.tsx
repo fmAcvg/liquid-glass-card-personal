@@ -1,12 +1,12 @@
 import { motion, useReducedMotion } from 'framer-motion'
 import React, { useState, useEffect } from 'react'
 import BackgroundCapsules from './components/BackgroundCapsules'
-import InteractiveCard from './components/InteractiveCard'
+import InteractiveCard from './components/InteractiveCard/InteractiveCard'
 import ContactBlock from './components/ContactBlock'
 import SkillsBlock from './components/SkillsBlock'
 import SkillsPanel from './components/SkillsPanel'
 import OnlineDot from './components/OnlineDot'
-import { ResumeButton, ProjectButton } from './components/Buttons'
+import { ResumeButton, ProjectButton } from './components/Buttons/Buttons'
 
 // card component extracted into components/InteractiveCard
 

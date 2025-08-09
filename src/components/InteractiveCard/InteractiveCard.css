@@ -1,0 +1,25 @@
+.will-change-transform { will-change: transform; }
+.glass{
+  background:
+    radial-gradient(160px 200px at var(--glx, 30%) var(--gly, 0%), rgba(255,255,255,0.18), rgba(255,255,255,0) 55%),
+    linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.05));
+  border: 1px solid rgba(255,255,255,0.25);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.28), inset 0 -1px 0 rgba(0,0,0,0.04);
+  backdrop-filter: blur(18px) saturate(135%);
+  -webkit-backdrop-filter: blur(18px) saturate(135%);
+  position: relative;
+}
+.glass:after{
+  content:"";
+  position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.10), inset 0 18px 40px rgba(255,255,255,0.05);
+}
+.glass:before{
+  content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  background: radial-gradient(var(--glintRadius, 140px) var(--glintRadius, 140px) at var(--glx,50%) var(--gly,10%), rgba(255,255,255,0.65), rgba(255,255,255,0) 60%);
+  opacity: var(--glintOpacity, 0.06);
+  transition: opacity 220ms ease, filter 220ms ease, background-size 220ms ease, transform 220ms ease;
+  filter: blur(0.6px);
+}
+.glass:hover:before{ --glintOpacity: 0.10; --glintRadius: 180px; }
+
