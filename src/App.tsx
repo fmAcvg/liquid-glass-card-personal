@@ -68,13 +68,14 @@ export default function App() {
                     <motion.img
                       src="/avatar.jpeg"
                       alt="Avatar"
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-cover rounded-full select-none [image-rendering:auto]"
+                      draggable={false}
                       whileHover={{ scale: 1.04, y: -2 }}
                       transition={{ type: 'spring', stiffness: 260, damping: 22 }}
                     />
                     {/* sheen */}
                     <div
-                      className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                      className="pointer-events-none absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                       style={{
                         background:
                           'radial-gradient(160px 110px at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.24), rgba(255,255,255,0) 60%)'
@@ -89,9 +90,9 @@ export default function App() {
                       }}
                     />
                   </div>
-                  {/* soft outer glow on hover */}
+                  {/* soft outer glow on hover (match avatar circle, avoid rectangular artifact) */}
                   <div
-                    className="pointer-events-none absolute -inset-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-40 w-40 md:h-44 md:w-44 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     style={{ boxShadow: '0 18px 40px rgba(59,130,246,0.14)' }}
                   />
                   {/* online indicator removed */}
