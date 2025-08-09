@@ -4,6 +4,10 @@ One-screen personal web card built with React (Vite), TailwindCSS, Framer Motion
 
 - Live: https://cardpagelarshoehn.netlify.app/
 
+### Preview
+
+![Preview](public/preview.png)
+
 ### Stack
 - React + Vite + TypeScript
 - TailwindCSS
@@ -15,4 +19,3 @@ npm install
 npm run dev
 ```
 
-hi

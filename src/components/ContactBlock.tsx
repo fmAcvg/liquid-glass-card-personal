@@ -1,5 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
+import { DISCORD_USER_ID } from '../config'
 
 type Contact = {
   email?: string
@@ -58,7 +59,7 @@ function GlassContactButton({
       </span>
       <motion.span
         className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none select-none whitespace-nowrap"
-        style={{ color: 'var(--text-primary)', textShadow: '0 1px 2px rgba(255,255,255,0.35)' }}
+        style={{ color: '#0b0c0f', textShadow: '0 1px 2px rgba(255,255,255,0.55)' }}
         initial={false}
         animate={{ opacity: active || forceExpanded ? 1 : 0 }}
         transition={{ duration: 0.22, ease: 'easeOut', delay: active && !forceExpanded ? 0.16 : 0 }}
@@ -129,61 +130,27 @@ export default function ContactBlock({ content }: { content?: Contact }) {
   const githubLabel = (() => {
     try {
       if (!githubUrl) return ''
-      if (/^https?:\/\//i.test(githubUrl)) {
-        const u = new URL(githubUrl)
-        const segments = u.pathname.split('/').filter(Boolean)
-        // Prefer username (first segment) over repo name
-        return segments[0] || 'GitHub'
-      }
-      return githubUrl
+      const u = new URL(githubUrl)
+      const segments = u.pathname.split('/').filter(Boolean)
+      return segments[segments.length - 1] || u.hostname
     } catch {
-      return 'GitHub'
+      return githubUrl
     }
   })()
   const linkedinName = content?.linkedin ?? ''
-  const linkedinUrl = (() => {
-    if (!linkedinName) return ''
-    if (/^https?:\/\//i.test(linkedinName)) return linkedinName
-    return ''
-  })()
-  const linkedinLabel = (() => {
-    if (!linkedinName) return ''
-    if (/^https?:\/\//i.test(linkedinName)) {
-      try {
-        const u = new URL(linkedinName)
-        const segRaw = u.pathname.split('/').filter(Boolean)
-        const last = segRaw[segRaw.length - 1] || ''
-        const decoded = decodeURIComponent(last)
-        const parts = decoded.split('-').filter(Boolean)
-        // Drop trailing parts that contain digits (profile id suffix)
-        const nameParts = parts.filter(p => !/[0-9]/.test(p))
-        const candidate = nameParts.length ? nameParts : parts.slice(0, 2)
-        const pretty = candidate.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
-        return pretty || 'LinkedIn'
-      } catch {
-        return 'LinkedIn'
-      }
-    }
-    return linkedinName
-  })()
   const discordName = content?.discord ?? ''
+  const discordUrl = (() => {
+    const raw = discordName
+    if (!raw && DISCORD_USER_ID) return `https://discordapp.com/users/${DISCORD_USER_ID}`
+    if (/^https?:\/\//i.test(raw)) return raw
+    if (/^\d{17,20}$/.test(raw)) return `https://discordapp.com/users/${raw}`
+    // If only a handle is provided, we cannot deep-link reliably; fall back to ID if configured
+    return DISCORD_USER_ID ? `https://discordapp.com/users/${DISCORD_USER_ID}` : ''
+  })()
   const instagramHandle = content?.instagram ?? ''
   const instagramUrl = instagramHandle
-    ? (/^https?:\/\//i.test(instagramHandle) ? instagramHandle : `https://instagram.com/${instagramHandle}`)
+    ? (instagramHandle.startsWith('http') ? instagramHandle : `https://instagram.com/${instagramHandle}`)
     : ''
-  const instagramLabel = (() => {
-    if (!instagramHandle) return ''
-    if (/^https?:\/\//i.test(instagramHandle)) {
-      try {
-        const u = new URL(instagramHandle)
-        const seg = u.pathname.split('/').filter(Boolean)
-        return seg[seg.length - 1] || 'Instagram'
-      } catch {
-        return 'Instagram'
-      }
-    }
-    return instagramHandle
-  })()
 
   return (
     <div className="w-full flex flex-wrap gap-3 justify-center">
@@ -224,9 +191,7 @@ export default function ContactBlock({ content }: { content?: Contact }) {
           </svg>
         }
         label="LinkedIn"
-        value={linkedinLabel}
-        href={linkedinUrl || undefined}
-        external={Boolean(linkedinUrl)}
+        value={linkedinName}
         active={hovered === 2}
         onHoverStart={() => setHovered(2)}
         onHoverEnd={() => setHovered(prev => (prev === 2 ? null : prev))}
@@ -240,6 +205,8 @@ export default function ContactBlock({ content }: { content?: Contact }) {
         }
         label="Discord"
         value={discordName}
+        href={discordUrl || undefined}
+        external
         active={hovered === 3}
         onHoverStart={() => setHovered(3)}
         onHoverEnd={() => setHovered(prev => (prev === 3 ? null : prev))}
@@ -254,7 +221,7 @@ export default function ContactBlock({ content }: { content?: Contact }) {
           </svg>
         }
         label="Instagram"
-        value={instagramLabel}
+        value={instagramHandle}
         href={instagramUrl || undefined}
         external
         active={hovered === 4}

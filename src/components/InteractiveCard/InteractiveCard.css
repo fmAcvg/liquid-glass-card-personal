@@ -23,6 +23,3 @@
 }
 .glass:hover:before{ --glintOpacity: 0.10; --glintRadius: 180px; }
 
-/* Dark mode text adjustments */
-.dark .text-neutral-900\/90{ color: var(--text-primary) !important; }
-
