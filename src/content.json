@@ -2,6 +2,7 @@
   "profile": {
     "name": "Lars Höhn",
     "age": 17,
+    "dob": "2008-06-23",
     "pronouns": "he/him",
     "nationality": "German",
     "tagline": "AI lover ❤️",
@@ -12,8 +13,9 @@
   "contact": {
     "email": "larshoeh@icloud.com",
     "github": "https://github.com/fmAcvg",
-    "linkedin": "Lars Höhn",
-    "discord": "larshoehn"
+    "linkedin": "https://de.linkedin.com/in/lars-h%C3%B6hn-27854a364",
+    "discord": "larshoehn",
+    "instagram": "https://www.instagram.com/larsvommars2306/"
   },
   "skills": [
     "AI interested",

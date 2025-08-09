@@ -109,7 +109,20 @@ export default function App() {
                     transition={{ duration: 0.2, ease: 'easeOut' }}
                     style={{ opacity: 0.95 }}
                   >
-                    {content ? `${content.profile.age} • ${content.profile.pronouns} • ${content.profile.nationality}` : '—'}
+                    {(() => {
+                      const calcAge = (dob: string) => {
+                        const d = new Date(dob)
+                        if (isNaN(d.getTime())) return NaN
+                        const today = new Date()
+                        let a = today.getFullYear() - d.getFullYear()
+                        const m = today.getMonth() - d.getMonth()
+                        if (m < 0 || (m === 0 && today.getDate() < d.getDate())) a--
+                        return a
+                      }
+                      const derivedAge = content?.profile?.dob ? calcAge(content.profile.dob) : undefined
+                      const age = Number.isNaN(derivedAge) || derivedAge === undefined ? content?.profile?.age : derivedAge
+                      return content ? `${age} • ${content.profile.pronouns} • ${content.profile.nationality}` : '—'
+                    })()}
                   </motion.div>
                   <motion.div
                     className="text-sm text-neutral-700/70"

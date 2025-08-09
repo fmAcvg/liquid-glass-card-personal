@@ -129,19 +129,61 @@ export default function ContactBlock({ content }: { content?: Contact }) {
   const githubLabel = (() => {
     try {
       if (!githubUrl) return ''
-      const u = new URL(githubUrl)
-      const segments = u.pathname.split('/').filter(Boolean)
-      return segments[segments.length - 1] || u.hostname
-    } catch {
+      if (/^https?:\/\//i.test(githubUrl)) {
+        const u = new URL(githubUrl)
+        const segments = u.pathname.split('/').filter(Boolean)
+        // Prefer username (first segment) over repo name
+        return segments[0] || 'GitHub'
+      }
       return githubUrl
+    } catch {
+      return 'GitHub'
     }
   })()
   const linkedinName = content?.linkedin ?? ''
+  const linkedinUrl = (() => {
+    if (!linkedinName) return ''
+    if (/^https?:\/\//i.test(linkedinName)) return linkedinName
+    return ''
+  })()
+  const linkedinLabel = (() => {
+    if (!linkedinName) return ''
+    if (/^https?:\/\//i.test(linkedinName)) {
+      try {
+        const u = new URL(linkedinName)
+        const segRaw = u.pathname.split('/').filter(Boolean)
+        const last = segRaw[segRaw.length - 1] || ''
+        const decoded = decodeURIComponent(last)
+        const parts = decoded.split('-').filter(Boolean)
+        // Drop trailing parts that contain digits (profile id suffix)
+        const nameParts = parts.filter(p => !/[0-9]/.test(p))
+        const candidate = nameParts.length ? nameParts : parts.slice(0, 2)
+        const pretty = candidate.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+        return pretty || 'LinkedIn'
+      } catch {
+        return 'LinkedIn'
+      }
+    }
+    return linkedinName
+  })()
   const discordName = content?.discord ?? ''
   const instagramHandle = content?.instagram ?? ''
   const instagramUrl = instagramHandle
-    ? (instagramHandle.startsWith('http') ? instagramHandle : `https://instagram.com/${instagramHandle}`)
+    ? (/^https?:\/\//i.test(instagramHandle) ? instagramHandle : `https://instagram.com/${instagramHandle}`)
     : ''
+  const instagramLabel = (() => {
+    if (!instagramHandle) return ''
+    if (/^https?:\/\//i.test(instagramHandle)) {
+      try {
+        const u = new URL(instagramHandle)
+        const seg = u.pathname.split('/').filter(Boolean)
+        return seg[seg.length - 1] || 'Instagram'
+      } catch {
+        return 'Instagram'
+      }
+    }
+    return instagramHandle
+  })()
 
   return (
     <div className="w-full flex flex-wrap gap-3 justify-center">
@@ -182,7 +224,9 @@ export default function ContactBlock({ content }: { content?: Contact }) {
           </svg>
         }
         label="LinkedIn"
-        value={linkedinName}
+        value={linkedinLabel}
+        href={linkedinUrl || undefined}
+        external={Boolean(linkedinUrl)}
         active={hovered === 2}
         onHoverStart={() => setHovered(2)}
         onHoverEnd={() => setHovered(prev => (prev === 2 ? null : prev))}
@@ -210,7 +254,7 @@ export default function ContactBlock({ content }: { content?: Contact }) {
           </svg>
         }
         label="Instagram"
-        value={instagramHandle}
+        value={instagramLabel}
         href={instagramUrl || undefined}
         external
         active={hovered === 4}
