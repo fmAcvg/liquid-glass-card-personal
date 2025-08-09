@@ -65,7 +65,7 @@ export function ProjectButton() {
       }}
     >
       <span className="absolute left-3 z-10 flex items-center justify-center" style={{ width: 20 }}>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className="text-neutral-900/90 dark:text-neutral-50">
           <path d="M9.5 16L5.5 12L9.5 8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
           <path d="M14.5 8L18.5 12L14.5 16" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>

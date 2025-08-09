@@ -1,11 +1,11 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, lazy, Suspense } from 'react'
 import BackgroundCapsules from './components/BackgroundCapsules'
 import InteractiveCard from './components/InteractiveCard/InteractiveCard'
 import ContactBlock from './components/ContactBlock'
 import SkillsBlock from './components/SkillsBlock'
-import SkillsPanel from './components/SkillsPanel'
-import ImpressumPanel from './components/ImpressumPanel'
+const SkillsPanel = lazy(() => import('./components/SkillsPanel'))
+const ImpressumPanel = lazy(() => import('./components/ImpressumPanel'))
 import { ResumeButton, ProjectButton } from './components/Buttons/Buttons'
 import ThemeToggle from './components/ThemeToggle'
 
@@ -67,9 +67,14 @@ export default function App() {
                   <div className="h-40 w-40 md:h-44 md:w-44 rounded-full overflow-hidden ring-2 ring-white/70 shadow-md transition-shadow duration-300">
                     <motion.img
                       src="/avatar.jpeg"
-                      alt="Avatar"
+                      alt="Portrait of Lars Höhn"
                       className="h-full w-full object-cover rounded-full select-none [image-rendering:auto]"
                       draggable={false}
+                      decoding="async"
+                      fetchPriority="high"
+                      loading="eager"
+                      width={176}
+                      height={176}
                       whileHover={{ scale: 1.04, y: -2 }}
                       transition={{ type: 'spring', stiffness: 260, damping: 22 }}
                     />
@@ -163,8 +168,16 @@ export default function App() {
         </motion.div>
       </div>
 
-      <SkillsPanel open={skillsOpen} onClose={() => setSkillsOpen(false)} />
-      <ImpressumPanel open={impressumOpen} onClose={() => setImpressumOpen(false)} />
+      {skillsOpen && (
+        <Suspense fallback={null}>
+          <SkillsPanel open={skillsOpen} onClose={() => setSkillsOpen(false)} />
+        </Suspense>
+      )}
+      {impressumOpen && (
+        <Suspense fallback={null}>
+          <ImpressumPanel open={impressumOpen} onClose={() => setImpressumOpen(false)} />
+        </Suspense>
+      )}
 
       {/* Bottom-right Impressum button */}
       <button
