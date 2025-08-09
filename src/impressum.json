@@ -1,0 +1,11 @@
+{
+  "title": "Imprint",
+  "entries": [
+    { "label": "Name", "value": "Lars Clemens Höhn" },
+    { "label": "Address", "value": "Example Street 12, 99817 Eisenach, Germany" },
+    { "label": "Email", "value": "larshoeh@icloud.com" },
+    { "label": "Phone", "value": "+49 000 000000" },
+    { "label": "Responsible for content", "value": "Lars Clemens Höhn" }
+  ]
+}
+

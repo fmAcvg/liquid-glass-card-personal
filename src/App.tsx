@@ -5,6 +5,7 @@ import InteractiveCard from './components/InteractiveCard/InteractiveCard'
 import ContactBlock from './components/ContactBlock'
 import SkillsBlock from './components/SkillsBlock'
 import SkillsPanel from './components/SkillsPanel'
+import ImpressumPanel from './components/ImpressumPanel'
 import OnlineDot from './components/OnlineDot'
 import { ResumeButton, ProjectButton } from './components/Buttons/Buttons'
 
@@ -16,6 +17,7 @@ import { ResumeButton, ProjectButton } from './components/Buttons/Buttons'
 
 export default function App() {
   const [skillsOpen, setSkillsOpen] = useState(false)
+  const [impressumOpen, setImpressumOpen] = useState(false)
   const [content, setContent] = useState<{ profile: any; contact: any; skills?: string[] } | null>(null)
   const reduce = useReducedMotion()
 
@@ -138,6 +140,22 @@ export default function App() {
       </div>
 
       <SkillsPanel open={skillsOpen} onClose={() => setSkillsOpen(false)} />
+      <ImpressumPanel open={impressumOpen} onClose={() => setImpressumOpen(false)} />
+
+      {/* Bottom-right Impressum button */}
+      <button
+        onClick={() => setImpressumOpen(true)}
+        className="fixed bottom-5 right-5 z-30 rounded-full px-4 py-2 text-sm font-medium text-neutral-900/90"
+        style={{
+          background: 'linear-gradient(135deg, rgba(255,255,255,0.40), rgba(255,255,255,0.12))',
+          border: '1px solid rgba(255,255,255,0.35)',
+          backdropFilter: 'blur(10px) saturate(120%)',
+          WebkitBackdropFilter: 'blur(10px) saturate(120%)',
+          boxShadow: '0 10px 30px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.35)'
+        }}
+      >
+        Imprint
+      </button>
 
       {/* default cursor restored */}
     </div>
