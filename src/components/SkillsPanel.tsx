@@ -34,20 +34,44 @@ export default function SkillsPanel({ open, onClose }: { open: boolean; onClose:
   const [skills, setSkills] = useState<Skill[]>([])
   const [targetH, setTargetH] = useState<number>(420)
 
+  function computeTargetHeight(list: Skill[]): number {
+    const vh = Math.max(480, Math.round(window.innerHeight * 0.82))
+    const rowH = window.innerWidth < 640 ? 42 : 56
+    const extras = 140
+    return Math.min(vh, extras + list.length * rowH)
+  }
+
   useEffect(() => {
     if (!open) return
-    const url = new URL('../skills.json', import.meta.url).toString()
-    fetch(`${url}?ts=${Date.now()}`)
-      .then(r => r.json())
-      .then((list: Skill[]) => {
+    ;(async () => {
+      try {
+        if (import.meta.env.PROD) {
+          // Prefer bundled asset in production
+          const mod = await import('../skills.json')
+          const list = (mod as { default: Skill[] }).default
+          setSkills(list)
+          setTargetH(computeTargetHeight(list))
+          return
+        }
+        // Development: fetch fresh with no-store and cache-busting
+        const devUrl = new URL('../skills.json', import.meta.url).toString()
+        const res = await fetch(`${devUrl}?ts=${Date.now()}`, { cache: 'no-store' })
+        const list = (await res.json()) as Skill[]
         setSkills(list)
-        const vh = Math.max(480, Math.round(window.innerHeight * 0.82))
-        const rowH = window.innerWidth < 640 ? 42 : 56
-        const extras = 140
-        const h = Math.min(vh, extras + list.length * rowH)
-        setTargetH(h)
-      })
-      .catch(() => {})
+        setTargetH(computeTargetHeight(list))
+      } catch {
+        // Fallback the other way around
+        try {
+          const assetUrl = new URL('../skills.json', import.meta.url).toString()
+          const res = await fetch(assetUrl)
+          const list = (await res.json()) as Skill[]
+          setSkills(list)
+          setTargetH(computeTargetHeight(list))
+        } catch {
+          setSkills([])
+        }
+      }
+    })()
   }, [open])
 
   useEffect(() => {
