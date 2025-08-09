@@ -120,7 +120,10 @@ function GlassContactButton({
 
 export default function ContactBlock({ content }: { content?: Contact }) {
   const [hovered, setHovered] = React.useState<number | null>(null)
-  const isMobile = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(max-width: 768px)').matches
+  // Expand on all phones: rely on viewport width <= 768px OR coarse pointer devices
+  const isMobile = (typeof window !== 'undefined' && (
+    (window.matchMedia && (window.matchMedia('(max-width: 768px)').matches || window.matchMedia('(pointer: coarse)').matches))
+  ))
   const email = content?.email ?? ''
   const githubUrl = content?.github ?? ''
   const githubLabel = (() => {
@@ -174,9 +177,8 @@ export default function ContactBlock({ content }: { content?: Contact }) {
       />
       <GlassContactButton
         icon={
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 4h16v16H4z" stroke="currentColor" strokeWidth="1.6" />
-            <path d="M7 17l10-10" stroke="currentColor" strokeWidth="1.6" />
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+            <path d="M22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.226.792 24 1.771 24h20.451C23.2 24 24 23.226 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003zM7.117 20.452H3.56V9h3.557v11.452zM5.338 7.433a2.062 2.062 0 110-4.125 2.062 2.062 0 010 4.125zM20.447 20.452h-3.554v-5.569c0-1.328-.027-3.039-1.852-3.039-1.853 0-2.136 1.445-2.136 2.939v5.669H9.35V9h3.414v1.561h.049c.476-.9 1.637-1.852 3.369-1.852 3.602 0 4.268 2.37 4.268 5.455v6.288z" />
           </svg>
         }
         label="LinkedIn"
@@ -188,8 +190,8 @@ export default function ContactBlock({ content }: { content?: Contact }) {
       />
       <GlassContactButton
         icon={
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M7.5 8.5c1.3.1 2.1-.5 2.8-1 1.1-.8 2.3-.8 3.4 0 .7.5 1.5 1.1 2.8 1 1.7-.1 2.7-.9 3.2-1.4-.2 1.4-.8 3.4-2.1 5.3-1.6 2.3-3.8 3.8-6.2 3.8-2.4 0-4.6-1.5-6.2-3.8-1.3-1.9-1.9-3.9-2.1-5.3.6.5 1.5 1.3 3.2 1.4z" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+            <path d="M20.317 4.3698A19.7913 19.7913 0 0016.558 3a13.227 13.227 0 00-.651 1.342 18.533 18.533 0 00-5.813 0A13.107 13.107 0 009.443 3a19.736 19.736 0 00-3.758 1.369C2.362 8.013 1.865 11.558 2.06 15.06a19.9 19.9 0 005.993 3.058 14.1 14.1 0 001.2-1.948 12.294 12.294 0 01-1.9-.91c.159-.119.314-.244.463-.372a9.026 9.026 0 008.468 0c.151.128.307.253.463.372a12.1 12.1 0 01-1.9.91c.35.67.759 1.334 1.2 1.948a19.9 19.9 0 005.993-3.058c.25-4.276-.424-7.79-2.803-10.69zM9.5 13.5c-.82 0-1.5-.9-1.5-2s.66-2 1.5-2 1.5.9 1.5 2-.68 2-1.5 2zm5 0c-.82 0-1.5-.9-1.5-2s.66-2 1.5-2S16 10.4 16 11.5s-.68 2-1.5 2z"/>
           </svg>
         }
         label="Discord"

@@ -26,8 +26,8 @@ export default function App() {
     <div className="relative h-full w-full overflow-visible md:overflow-hidden">
       <BackgroundCapsules active={!skillsOpen} />
 
-      {/* Centered header actions */}
-      <div className="absolute top-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3">
+      {/* Centered header actions (fixed) */}
+      <div className="fixed top-5 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3">
         <ResumeButton />
         <ProjectButton />
       </div>

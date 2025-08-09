@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <clipPath id="roundClip">
+      <circle cx="64" cy="64" r="60" />
+    </clipPath>
+  </defs>
+  <rect width="128" height="128" rx="64" ry="64" fill="#e8edf6" />
+  <image href="/avatar.jpeg" x="4" y="4" width="120" height="120" clip-path="url(#roundClip)" preserveAspectRatio="xMidYMid slice" />
+</svg>
+
