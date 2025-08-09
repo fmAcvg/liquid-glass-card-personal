@@ -16,10 +16,10 @@ function SkillRowLarge({ skill, delay = 0 }: { skill: Skill; delay?: number }) {
       >
         {skill.name}
       </motion.div>
-      <div className="relative h-3 sm:h-3.5 rounded-full flex-1 overflow-hidden" style={{ backgroundColor: 'rgba(var(--accent-rgb),0.18)' }}>
+      <div className="relative h-3 sm:h-3.5 rounded-full flex-1 overflow-hidden" style={{ backgroundColor: 'rgba(var(--accent-rgb),0.15)' }}>
         <motion.div
           className="absolute inset-0 origin-left transform-gpu rounded-full will-change-transform"
-          style={{ background: 'linear-gradient(90deg, rgba(var(--accent-rgb),0.98), rgba(var(--accent-rgb),0.88), rgba(var(--accent-rgb),0.98))' }}
+          style={{ background: 'linear-gradient(90deg, rgba(var(--accent-rgb),0.9), rgba(var(--accent-rgb),0.8), rgba(var(--accent-rgb),0.95))' }}
           initial={{ scaleX: 0 }}
           animate={{ scaleX: pct }}
           transition={{ duration: 0.6, ease: 'easeInOut', delay: delay + 0.18 }}
