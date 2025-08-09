@@ -6,7 +6,7 @@ One-screen personal web card built with React (Vite), TailwindCSS, Framer Motion
 
 ### Preview
 
-![Preview](public/preview.png)
+![Preview](public/image.png)
 
 ### Stack
 - React + Vite + TypeScript

@@ -34,7 +34,7 @@ function GlassContactButton({
   const Comp: any = motion.a
   const commonProps = {
     className:
-      'relative inline-flex items-center justify-center rounded-full text-sm font-medium text-neutral-900/90 overflow-hidden',
+      'relative inline-flex items-center justify-center rounded-full text-sm font-medium text-neutral-900/90 overflow-hidden no-underline',
     style: {
       height: 40,
       width: forceExpanded ? 220 : 44,
@@ -138,6 +138,33 @@ export default function ContactBlock({ content }: { content?: Contact }) {
     }
   })()
   const linkedinName = content?.linkedin ?? ''
+  const linkedinUrl = (() => {
+    if (!linkedinName) return ''
+    if (/^https?:\/\//i.test(linkedinName)) return linkedinName
+    return ''
+  })()
+  const linkedinLabel = (() => {
+    if (!linkedinName) return ''
+    const normalize = (slug: string) => {
+      const cleaned = decodeURIComponent(slug).replace(/^@/, '').replace(/\/$/, '')
+      const tokens = cleaned.split(/[-_]/).filter(Boolean)
+      const noDigits = tokens.filter(t => !/[0-9]/.test(t))
+      const use = noDigits.length ? noDigits : tokens.slice(0, 2)
+      if (!use.length) return 'LinkedIn'
+      return use.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+    }
+    try {
+      if (/^https?:\/\//i.test(linkedinName)) {
+        const u = new URL(linkedinName)
+        const segRaw = u.pathname.split('/').filter(Boolean)
+        const last = segRaw[segRaw.length - 1] || ''
+        return normalize(last)
+      }
+      return normalize(linkedinName)
+    } catch {
+      return 'LinkedIn'
+    }
+  })()
   const discordName = content?.discord ?? ''
   const discordUrl = (() => {
     const raw = discordName
@@ -149,8 +176,22 @@ export default function ContactBlock({ content }: { content?: Contact }) {
   })()
   const instagramHandle = content?.instagram ?? ''
   const instagramUrl = instagramHandle
-    ? (instagramHandle.startsWith('http') ? instagramHandle : `https://instagram.com/${instagramHandle}`)
+    ? (instagramHandle.startsWith('http') ? instagramHandle : `https://instagram.com/${instagramHandle.replace(/^@/, '')}`)
     : ''
+  const instagramLabel = (() => {
+    if (!instagramHandle) return ''
+    const raw = instagramHandle
+    try {
+      if (/^https?:\/\//i.test(raw)) {
+        const u = new URL(raw)
+        const seg = u.pathname.split('/').filter(Boolean)
+        return (seg[seg.length - 1] || 'Instagram').replace(/^@/, '')
+      }
+      return raw.replace(/^@/, '')
+    } catch {
+      return 'Instagram'
+    }
+  })()
 
   return (
     <div className="w-full flex flex-wrap gap-3 justify-center">
@@ -191,7 +232,9 @@ export default function ContactBlock({ content }: { content?: Contact }) {
           </svg>
         }
         label="LinkedIn"
-        value={linkedinName}
+        value={linkedinLabel}
+        href={linkedinUrl || undefined}
+        external={Boolean(linkedinUrl)}
         active={hovered === 2}
         onHoverStart={() => setHovered(2)}
         onHoverEnd={() => setHovered(prev => (prev === 2 ? null : prev))}
@@ -221,7 +264,7 @@ export default function ContactBlock({ content }: { content?: Contact }) {
           </svg>
         }
         label="Instagram"
-        value={instagramHandle}
+        value={instagramLabel}
         href={instagramUrl || undefined}
         external
         active={hovered === 4}
