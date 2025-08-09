@@ -182,7 +182,7 @@ export default function App() {
       {/* Bottom-right Impressum button */}
       <button
         onClick={() => setImpressumOpen(true)}
-        className="fixed bottom-5 right-5 z-30 rounded-full px-4 py-2 text-sm font-medium text-neutral-900/90"
+        className="fixed bottom-5 right-5 z-30 rounded-full px-4 py-2 text-sm font-medium text-neutral-900/90 dark:text-neutral-50"
         style={{
           background: 'linear-gradient(135deg, rgba(255,255,255,0.40), rgba(255,255,255,0.12))',
           border: '1px solid rgba(255,255,255,0.35)',

@@ -6,23 +6,53 @@ type Skill = { name: string; level: number }
 function SkillRowLarge({ skill, delay = 0 }: { skill: Skill; delay?: number }) {
   const pct = Math.max(0, Math.min(10, skill.level)) / 10
   return (
-    <div className="flex items-center gap-5">
+    <div className="group flex items-center gap-5">
       <motion.div
-        className="w-48 shrink-0 text-base sm:text-lg"
-        style={{ color: 'var(--text-primary)', textShadow: '0 1px 1px rgba(255,255,255,0.2)' }}
+        className="relative w-48 shrink-0 text-base sm:text-lg text-[var(--text-primary)] transition-colors duration-200 group-hover:text-[var(--accent)]"
+        style={{ textShadow: '0 1px 1px rgba(255,255,255,0.2)' }}
         initial={{ opacity: 0, y: 4 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: 'easeOut', delay }}
       >
-        {skill.name}
+        <span className="relative">
+          {skill.name}
+          <span
+            aria-hidden
+            className="absolute left-0 -bottom-1 h-0.5 w-0 rounded-full bg-[var(--accent)] opacity-0 group-hover:w-full group-hover:opacity-100 transition-all duration-300"
+            style={{ filter: 'blur(0.2px)' }}
+          />
+        </span>
       </motion.div>
-      <div className="relative h-3 sm:h-3.5 rounded-full flex-1 overflow-hidden" style={{ backgroundColor: 'rgba(var(--accent-rgb),0.15)' }}>
+      <div
+        className="group/bar relative h-3 sm:h-3.5 rounded-full flex-1 overflow-hidden transition-shadow duration-300"
+        style={{ backgroundColor: 'rgba(var(--accent-rgb),0.15)' }}
+        onPointerMove={(e: any) => {
+          const el = e.currentTarget as HTMLElement
+          const rect = el.getBoundingClientRect()
+          const mx = ((e.clientX - rect.left) / rect.width) * 100
+          const my = ((e.clientY - rect.top) / rect.height) * 100
+          el.style.setProperty('--mx', `${mx}%`)
+          el.style.setProperty('--my', `${my}%`)
+        }}
+      >
         <motion.div
           className="absolute inset-0 origin-left transform-gpu rounded-full will-change-transform"
           style={{ background: 'linear-gradient(90deg, rgba(var(--accent-rgb),0.9), rgba(var(--accent-rgb),0.8), rgba(var(--accent-rgb),0.95))' }}
           initial={{ scaleX: 0 }}
           animate={{ scaleX: pct }}
           transition={{ duration: 0.6, ease: 'easeInOut', delay: delay + 0.18 }}
+        />
+        {/* hover glow */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -inset-1 rounded-full opacity-0 group-hover/bar:opacity-100 transition-opacity duration-200"
+          style={{ boxShadow: '0 0 18px rgba(var(--accent-rgb),0.35), 0 4px 12px rgba(var(--accent-rgb),0.25)' }}
+        />
+        {/* pointer-follow highlight */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 rounded-full opacity-0 group-hover/bar:opacity-100 transition-opacity duration-150"
+          style={{ background: 'radial-gradient(160px 80px at var(--mx,50%) var(--my,50%), rgba(var(--accent-rgb),0.30), rgba(var(--accent-rgb),0) 60%)' }}
         />
       </div>
     </div>

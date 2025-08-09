@@ -198,6 +198,13 @@ export default function BackgroundCapsules({ active = true }: { active?: boolean
           <stop offset="0%" stopColor="rgba(255,255,255,0.9)" />
           <stop offset="100%" stopColor="rgba(255,255,255,0)" />
         </radialGradient>
+        <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
         <radialGradient id="haloColor1" r="1" cx="0" cy="0" gradientUnits="userSpaceOnUse">
           <stop offset="0%" stopColor="rgba(147,197,253,0.5)" />
           <stop offset="100%" stopColor="rgba(147,197,253,0)" />
@@ -227,7 +234,7 @@ export default function BackgroundCapsules({ active = true }: { active?: boolean
               strokeWidth={widths[i % widths.length] + (hoverPos ? 0.6 : 0)}
               fill="none"
               pathLength={1}
-              style={{ strokeDasharray: '0.22 0.78', filter: 'blur(0.3px)' }}
+              style={{ strokeDasharray: '0.22 0.78', filter: 'blur(0.3px)', opacity: hoverPos ? 0.96 : 0.86 }}
               initial={reduce ? undefined : { strokeDashoffset: 0 }}
               animate={reduce ? undefined : { strokeDashoffset: (i % 2 === 0) ? [-0, -1] : [0, 1], opacity: hoverPos ? 0.95 : 0.85 }}
               transition={{ duration: durations[i % durations.length] * scale, repeat: Infinity, ease: 'easeInOut' }}
@@ -239,7 +246,7 @@ export default function BackgroundCapsules({ active = true }: { active?: boolean
               strokeWidth={widths[i % widths.length] - 4 + (hoverPos ? 0.4 : 0)}
               fill="none"
               pathLength={1}
-              style={{ strokeDasharray: '0.16 0.84', mixBlendMode: 'overlay' as any, opacity: hoverPos ? 0.9 : 0.8 }}
+              style={{ strokeDasharray: '0.16 0.84', mixBlendMode: 'overlay' as any, opacity: hoverPos ? 0.95 : 0.82, filter: hoverPos ? 'url(#softGlow)' : undefined }}
               initial={reduce ? undefined : { strokeDashoffset: (i % 2 === 0) ? 0.5 : -0.5 }}
               animate={reduce ? undefined : { strokeDashoffset: (i % 2 === 0) ? [0.5, -0.5] : [-0.5, 0.5] }}
               transition={{ duration: durations[i % durations.length] * 1.2 * scale, repeat: Infinity, ease: 'easeInOut' }}
