@@ -26,6 +26,36 @@ body {
   background: linear-gradient(180deg, #ecf0f6, #e3e8f1 40%, #dfe4ee);
 }
 
+/* Themes */
+:root{
+  --bg-grad-start: #ecf0f6;
+  --bg-grad-mid: #e3e8f1;
+  --bg-grad-end: #dfe4ee;
+  --text-primary: #0b0c0f;
+  --text-secondary: rgba(11,12,15,0.75);
+  --accent: #3b82f6; /* light */
+  --accent-rgb: 59,130,246;
+  --aura: rgba(120,160,140,0.12);
+  --rail: rgba(0,0,0,0.08);
+}
+
+.dark:root{
+  --bg-grad-start: #0d0f14;
+  --bg-grad-mid: #0f131b;
+  --bg-grad-end: #121621;
+  --text-primary: #f5f7fb;
+  --text-secondary: rgba(245,247,251,0.78);
+  --accent: #8b5cf6; /* purple */
+  --accent-rgb: 139,92,246;
+  --aura: rgba(140,120,180,0.12);
+  --rail: rgba(255,255,255,0.16);
+}
+
+body{ background: linear-gradient(180deg, var(--bg-grad-start), var(--bg-grad-mid) 40%, var(--bg-grad-end)); }
+
+/* Default text color to follow theme */
+body, #root { color: var(--text-primary); }
+
 /* Allow vertical scrolling on small screens or short viewports */
 @media (max-width: 768px), (max-height: 720px) {
   #root { overflow: visible; }

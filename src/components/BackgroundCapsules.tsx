@@ -87,6 +87,19 @@ export default function BackgroundCapsules({ active = true }: { active?: boolean
       { o: '100%', c: 'rgba(255,255,255,0)' }
     ]}
   ]
+  // Dark mode accent override
+  const isDark = typeof document !== 'undefined' && document.documentElement.classList.contains('dark')
+  if (isDark) {
+    gradients[0].stops[1].c = 'rgba(196,181,253,0.9)'
+    gradients[0].stops[2].c = 'rgba(139,92,246,0.9)'
+    gradients[0].stops[3].c = 'rgba(124,58,237,0.8)'
+    gradients[1].stops[1].c = 'rgba(221,214,254,0.9)'
+    gradients[1].stops[2].c = 'rgba(167,139,250,0.9)'
+    gradients[1].stops[3].c = 'rgba(139,92,246,0.9)'
+    gradients[2].stops[1].c = 'rgba(196,181,253,0.9)'
+    gradients[2].stops[2].c = 'rgba(167,139,250,0.9)'
+    gradients[2].stops[3].c = 'rgba(124,58,237,0.85)'
+  }
   const widths = [18, 22, 12, 16, 10]
   const durations = [22, 26, 28, 24, 30]
 

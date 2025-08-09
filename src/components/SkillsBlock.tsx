@@ -8,10 +8,16 @@ export default function SkillsBlock({ items }: { items?: string[] }) {
         {labels.map((label, i) => (
           <span
             key={i}
-            className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm md:text-base font-medium border border-blue-400/30 bg-gradient-to-br from-blue-50/60 to-blue-100/20 hover:from-blue-100/80 hover:to-blue-200/30 hover:shadow-[0_6px_18px_rgba(59,130,246,0.18)] transition-all duration-200"
+            className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm md:text-base font-medium transition-all duration-200"
+            style={{
+              border: '1px solid rgba(var(--accent-rgb),0.28)',
+              background:
+                'linear-gradient(135deg, rgba(var(--accent-rgb),0.08), rgba(var(--accent-rgb),0.02))',
+              boxShadow: '0 6px 18px rgba(var(--accent-rgb),0.18)'
+            }}
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-blue-500/80" />
-            <span className="text-neutral-900/90">{label}</span>
+            <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: 'var(--accent)' }} />
+            <span style={{ color: 'var(--text-primary)' }}>{label}</span>
           </span>
         ))}
       </div>

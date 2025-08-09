@@ -6,8 +6,8 @@ import ContactBlock from './components/ContactBlock'
 import SkillsBlock from './components/SkillsBlock'
 import SkillsPanel from './components/SkillsPanel'
 import ImpressumPanel from './components/ImpressumPanel'
-import OnlineDot from './components/OnlineDot'
 import { ResumeButton, ProjectButton } from './components/Buttons/Buttons'
+import ThemeToggle from './components/ThemeToggle'
 
 // card component extracted into components/InteractiveCard
 
@@ -28,10 +28,13 @@ export default function App() {
     <div className="relative h-full w-full overflow-visible md:overflow-hidden">
       <BackgroundCapsules active={!skillsOpen} />
 
-      {/* Centered header actions (fixed) */}
+      {/* Header actions */}
       <div className="fixed top-5 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3">
         <ResumeButton />
         <ProjectButton />
+      </div>
+      <div className="fixed top-5 right-5 z-30">
+        <ThemeToggle />
       </div>
 
       <div className="md:absolute md:inset-0 flex items-center justify-center p-6 min-h-screen md:min-h-0">
@@ -77,21 +80,28 @@ export default function App() {
                           'radial-gradient(160px 110px at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.24), rgba(255,255,255,0) 60%)'
                       }}
                     />
+                    {/* subtle greenish aura */}
+                    <div
+                      className="pointer-events-none absolute -inset-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      style={{
+                        background:
+                          'radial-gradient(220px 160px at var(--mx,50%) var(--my,50%), rgba(120,160,140,0.12), rgba(120,160,140,0) 70%)'
+                      }}
+                    />
                   </div>
                   {/* soft outer glow on hover */}
                   <div
                     className="pointer-events-none absolute -inset-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     style={{ boxShadow: '0 18px 40px rgba(59,130,246,0.14)' }}
                   />
-                  {/* online/offline dot */}
-                  <OnlineDot />
+                  {/* online indicator removed */}
                 </motion.div>
                 <div className="space-y-2 mx-auto max-w-[30ch]">
                   <motion.div
                     className="text-3xl md:text-4xl font-semibold tracking-tight select-none"
                     whileHover={{ y: -1, scale: 1.01 }}
                     transition={{ type: 'spring', stiffness: 240, damping: 20 }}
-                    style={{ textShadow: '0 1px 0 rgba(255,255,255,0.6)' }}
+                    style={{ textShadow: '0 1px 0 rgba(255,255,255,0.6)', color: 'var(--text-primary)' }}
                   >
                     {content?.profile?.name ?? '—'}
                   </motion.div>
@@ -99,7 +109,7 @@ export default function App() {
                     className="text-neutral-700/85"
                     whileHover={{ y: -1, opacity: 1 }}
                     transition={{ duration: 0.2, ease: 'easeOut' }}
-                    style={{ opacity: 0.95 }}
+                    style={{ opacity: 0.95, color: 'var(--text-secondary)' }}
                   >
                     {content?.profile?.tagline}
                   </motion.div>
@@ -107,7 +117,7 @@ export default function App() {
                     className="text-lg md:text-xl text-neutral-700/85"
                     whileHover={{ y: -1, opacity: 1 }}
                     transition={{ duration: 0.2, ease: 'easeOut' }}
-                    style={{ opacity: 0.95 }}
+                    style={{ opacity: 0.95, color: 'var(--text-secondary)' }}
                   >
                     {(() => {
                       const calcAge = (dob: string) => {
@@ -128,7 +138,7 @@ export default function App() {
                     className="text-sm text-neutral-700/70"
                     whileHover={{ y: -1, opacity: 1 }}
                     transition={{ duration: 0.2, ease: 'easeOut' }}
-                    style={{ opacity: 0.95 }}
+                    style={{ opacity: 0.95, color: 'var(--text-secondary)' }}
                   >
                     {content?.profile?.school} — {content?.profile?.graduation}
                   </motion.div>

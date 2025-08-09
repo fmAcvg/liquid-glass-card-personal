@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
@@ -9,6 +10,11 @@ export default {
           100: "#eef0f3",
           200: "#dfe3ea",
           900: "#0b0c0f"
+        }
+      ,
+        accent: {
+          light: '#3b82f6',
+          dark: '#8b5cf6'
         }
       },
       backdropBlur: {

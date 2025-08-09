@@ -58,7 +58,7 @@ function GlassContactButton({
       </span>
       <motion.span
         className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none select-none whitespace-nowrap"
-        style={{ color: '#0b0c0f', textShadow: '0 1px 2px rgba(255,255,255,0.55)' }}
+        style={{ color: 'var(--text-primary)', textShadow: '0 1px 2px rgba(255,255,255,0.35)' }}
         initial={false}
         animate={{ opacity: active || forceExpanded ? 1 : 0 }}
         transition={{ duration: 0.22, ease: 'easeOut', delay: active && !forceExpanded ? 0.16 : 0 }}

@@ -9,17 +9,17 @@ function SkillRowLarge({ skill, delay = 0 }: { skill: Skill; delay?: number }) {
     <div className="flex items-center gap-5">
       <motion.div
         className="w-48 shrink-0 text-base sm:text-lg"
-        style={{ color: '#0b0c0f', textShadow: '0 1px 1px rgba(255,255,255,0.5)' }}
+        style={{ color: 'var(--text-primary)', textShadow: '0 1px 1px rgba(255,255,255,0.2)' }}
         initial={{ opacity: 0, y: 4 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: 'easeOut', delay }}
       >
         {skill.name}
       </motion.div>
-      <div className="relative h-3 sm:h-3.5 rounded-full bg-neutral-300/60 flex-1 overflow-hidden">
+      <div className="relative h-3 sm:h-3.5 rounded-full flex-1 overflow-hidden" style={{ backgroundColor: 'rgba(var(--accent-rgb),0.18)' }}>
         <motion.div
           className="absolute inset-0 origin-left transform-gpu rounded-full will-change-transform"
-          style={{ background: 'linear-gradient(90deg, rgba(191,219,254,0.98), rgba(96,165,250,0.98), rgba(59,130,246,0.98))' }}
+          style={{ background: 'linear-gradient(90deg, rgba(var(--accent-rgb),0.98), rgba(var(--accent-rgb),0.88), rgba(var(--accent-rgb),0.98))' }}
           initial={{ scaleX: 0 }}
           animate={{ scaleX: pct }}
           transition={{ duration: 0.6, ease: 'easeInOut', delay: delay + 0.18 }}

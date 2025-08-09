@@ -25,6 +25,8 @@ export default function InteractiveCard({ children, onClick, className }: CardPr
     const hy = ((py + 0.5) * 100).toFixed(2)
     e.currentTarget.style.setProperty('--glx', `${hx}%`)
     e.currentTarget.style.setProperty('--gly', `${hy}%`)
+    e.currentTarget.style.setProperty('--mx', `${hx}%`)
+    e.currentTarget.style.setProperty('--my', `${hy}%`)
     e.currentTarget.style.setProperty('box-shadow', `0 24px 60px rgba(0,0,0,0.18), 0 0 60px rgba(59,130,246,0.08)`)
   }
 
@@ -55,6 +57,15 @@ export default function InteractiveCard({ children, onClick, className }: CardPr
       whileTap={{ scale: 0.997 }}
       transition={{ type: 'spring', stiffness: 260, damping: 22 }}
     >
+      {/* subtle green-grey glow that follows pointer */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"
+        style={{
+          background:
+            'radial-gradient(220px 160px at var(--mx,50%) var(--my,50%), rgba(125, 153, 138, 0.12), rgba(125,153,138,0) 65%)'
+        }}
+      />
       <div className="text-base leading-relaxed relative z-10">{children}</div>
     </motion.div>
   )
