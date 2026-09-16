@@ -1,17 +1,17 @@
 {
   "profile": {
     "name": "Lars Höhn",
-    "age": 17,
+    "age": 18,
     "dob": "2008-06-23",
     "pronouns": "he/him",
     "nationality": "German",
-    "tagline": "learning AI",
-    "goal": "Future job goal: AI researcher. I believe on our way to reach AGI there's much more than just LLMs.",
+    "tagline": "STAR Student SAP",
+    "goal": "Future goal: Building a deep understanding of intelligence and machine learning.",
     "school": "Ernst-Abbe-Gymnasium Eisenach",
-    "graduation": "Abitur in 2026"
+    "graduation": "B.Sc. Computer Science - Expected 2029"
   },
   "contact": {
-    "email": "larshoeh@icloud.com",
+    "email": "lars.hoehn@sap.com",
     "github": "https://github.com/fmAcvg",
     "linkedin": "https://de.linkedin.com/in/lars-h%C3%B6hn-27854a364",
     "discord": "larshoehn",
